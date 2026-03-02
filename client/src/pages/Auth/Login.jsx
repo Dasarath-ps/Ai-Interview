@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import axios from "axios";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,10 +29,18 @@ export default function Login() {
     };
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 2500);
+
+    try {
+      const res = await axios.post(`${VITE_SERVER_URL}/auth/login`, {
+        email,
+        password,
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (
